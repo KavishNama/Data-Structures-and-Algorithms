@@ -1,4 +1,4 @@
-## Welcome to My Data Structures and Algorithms Repository
+## Welcome to my Data Structures and Algorithms Repository
 
 You can use the [editor on GitHub](https://github.com/KavishNama/Data-Structures-and-Algorithms/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
