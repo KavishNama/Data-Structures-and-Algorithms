@@ -404,7 +404,7 @@ int main()
         case 8: // Deleting an element from the circular linked list
             cout << "Please enter an index: ";
             cin >> index;
-            cout << l->Delete(index) << " deleted from the linked list" << endl;
+            cout << l->Delete(index) << " deleted from the circular linked list" << endl;
             break;
 
         case 9: // Linear Search for an element in the circular linked list
