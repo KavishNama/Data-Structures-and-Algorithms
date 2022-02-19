@@ -37,18 +37,10 @@ public:
     T MinValue();
     void Insert(int index, T x);
     T Delete(int index);
-
-    /*
-    
-    
-    
-    
-    
-    
-    
     Node<T>* LinearSearch(T key);
     bool IsSorted();
-    void Reverse();*/
+    void Reverse();
+
 };
 
 template <class T>
@@ -290,64 +282,59 @@ T DoublyCircularLinkedList<T>::Delete(int index) {
     return x;
 }
 
-//// Function to perform linear search on a circular linked list
-//template <class T>
-//Node<T>* CircularLinkedList<T>::LinearSearch(T key) {
-//    Node<T>* h = head;
-//    if (head == NULL) {
-//        return NULL;
-//    }
-//    do {
-//        if (key == h->data) {
-//            return h;
-//        }
-//        h = h->next;
-//    } while (h != head);
-//
-//    return NULL;
-//}
-//
-//// Function to check if a circular linked list is sorted or not
-//template <class T>
-//bool CircularLinkedList<T>::IsSorted() {
-//    T x = INT_MIN;
-//    Node<T>* h = head;
-//    if (head == NULL) {
-//        return false;
-//    }
-//    do {
-//        if (h->data < x) {
-//            return false;
-//        }
-//        x = h->data;
-//        h = h->next;
-//    } while (h != head);
-//    return true;
-//}
-//
-//// Function to reverse a circular linked list by Reversing links
-//template <class T>
-//void CircularLinkedList<T>::Reverse() {
-//    Node<T>* p = head;
-//    Node<T>* q = head;
-//    Node<T>* r = head;
-//    if (head == NULL) {
-//        return;
-//    }
-//    while (q->next != head) {
-//        q = q->next;
-//    }
-//    while (r->next->next != head) {
-//        r = r->next;
-//    }
-//    do {
-//        r = q;
-//        q = p;
-//        p = p->next;
-//        q->next = r;
-//    } while (p != head);
-//    head = q;
-//}
+// Function to perform linear search on doubly circular linked list
+template <class T>
+Node<T>* DoublyCircularLinkedList<T>::LinearSearch(T key) {
+    Node<T>* h = head;
+    if (head == NULL) {
+        return NULL;
+    }
+    do {
+        if (key == h->data) {
+            return h;
+        }
+        h = h->next;
+    } while (h != head);
+
+    return NULL;
+}
+
+// Function to check if doubly circular linked list is sorted or not
+template <class T>
+bool DoublyCircularLinkedList<T>::IsSorted() {
+    T x = INT_MIN;
+    Node<T>* h = head;
+    if (head == NULL) {
+        return false;
+    }
+    do {
+        if (h->data < x) {
+            return false;
+        }
+        x = h->data;
+        h = h->next;
+    } while (h != head);
+    return true;
+}
+
+// Function to reverse a doubly circular linked list by Reversing links
+template <class T>
+void DoublyCircularLinkedList<T>::Reverse() {
+    Node<T>* p = head, * q = NULL, * r = NULL;
+    if (head == NULL) {
+        return;
+    }
+    q = head->prev;
+    r = head->prev->prev;
+    do {
+        r = q;
+        q = p;
+        p = p->next;
+        q->next = r;
+        q->prev = p;
+    } while (p != head);
+    head = q;
+}
 
 
 int main()
@@ -368,14 +355,10 @@ int main()
         cout << "6. Find Minimum value\n";
         cout << "7. Insert an element at a given indext\n";
         cout << "8. Delete an element\n";
-
-        /*
-        
-        
         cout << "9. Perform simple linear search\n";
-        cout << "10. Checking if the circular linked list is sorted or not\n";
-        cout << "11. Reverse\n";*/
-        cout << "9. Exit Menu\n\n";
+        cout << "10. Checking if the doubly circular linked list is sorted or not\n";
+        cout << "11. Reverse\n";
+        cout << "12. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -424,33 +407,34 @@ int main()
             cout << l->Delete(index) << " deleted from the doubly circular linked list" << endl;
             break;
 
-        //case 9: // Linear Search for an element in the circular linked list
-        //    cout << "Please enter an element: ";
-        //    cin >> x;
-        //    if (auto node = l->LinearSearch(x)) {
-        //        cout << x << " is found at address: " << node << endl;
-        //    }
-        //    else {
-        //        cout << x << " not found" << endl;
-        //    }
-        //    break;
+        case 9: // Linear Search for an element in the doubly circular linked list
+            cout << "Please enter an element: ";
+            cin >> x;
+            if (auto node = l->LinearSearch(x)) {
+                cout << x << " is found at address: " << node << endl;
+            }
+            else {
+                cout << x << " not found" << endl;
+            }
+            break;
 
-        //case 10: // Checking if the circular linked list is sorted or not
-        //    if (l->IsSorted()) {
-        //        cout << "Circular Linked List is sorted" << endl;
-        //    }
-        //    else {
-        //        cout << "Circular Linked List is not sorted" << endl;
-        //    }
-        //    break;
+        case 10: // Checking if the doubly circular linked list is sorted or not
+            if (l->IsSorted()) {
+                cout << "Doubly Circular Linked List is sorted" << endl;
+            }
+            else {
+                cout << "Doubly Circular Linked List is not sorted" << endl;
+            }
+            break;
 
-        //case 11: // Reversing the circular linked list by reversing links
-        //    l->Reverse();
-        //    cout << "Circular Linked List Reversed" << endl;
-        //    break;
+        case 11: // Reversing the doubly circular linked list by reversing links
+            l->Reverse();
+            cout << "Circular Linked List Reversed" << endl;
+            break;
+
         }
 
-    } while (choice < 9);
+    } while (choice < 12);
 
     return 0;
 }
