@@ -27,7 +27,7 @@ public:
     void Create();
     void Display();
     SparseLL* Add(SparseLL* s);
-    
+
 };
 
 SparseLL::SparseLL(int m, int n, int numEle) {
