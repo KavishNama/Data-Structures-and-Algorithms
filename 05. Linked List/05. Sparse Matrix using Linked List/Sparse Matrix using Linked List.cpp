@@ -27,11 +27,7 @@ public:
     void Create();
     void Display();
     SparseLL* Add(SparseLL* s);
-
-    //// // Overloading Extraction and Insertion Operators
-    //friend istream& operator>>(istream& is, Sparse& s);
-    //friend ostream& operator<<(ostream& os, Sparse& s);
-
+    
 };
 
 SparseLL::SparseLL(int m, int n, int numEle) {
