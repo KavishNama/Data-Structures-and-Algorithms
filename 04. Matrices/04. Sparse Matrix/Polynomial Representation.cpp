@@ -23,6 +23,7 @@ public:
     // Function prototypes
     void Create();
     void Display();
+    void Evaluate(int x);
     Polynomial* Add(Polynomial* p);
 
 };
@@ -59,6 +60,16 @@ void Polynomial::Display() {
         }
     }
     cout << endl;
+}
+
+// Function to evaluate the value of a polynomial
+void Polynomial::Evaluate(int x) {
+    cout << "The value of the polynomial when x = " << x << " is: ";
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += t[i].coeff * pow(x, t[i].exp);
+    }
+    cout << sum << endl;
 }
 
 // Function to add two polynomials
@@ -115,8 +126,9 @@ int main()
         cout << "\nMain Menu:\tChoose an operation to be performed on the Polynomial\n\n";
         cout << "1. Create\n";
         cout << "2. Display\n";
-        cout << "3. Add two polynomials\n";
-        cout << "4. Exit Menu\n\n";
+        cout << "3. Evaluate\n";
+        cout << "4. Add two polynomials\n";
+        cout << "5. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -132,7 +144,14 @@ int main()
             // or, use cout<<P; by overloading insertion operator
             break;
 
-        case 3: // Adding two sparse matrices
+        case 3: // Evaluating the Polynomial
+            cout << "Please enter the value of x: " << endl;
+            int x;
+            cin >> x;
+            P->Evaluate(x);
+            break;
+
+        case 4: // Adding two sparse matrices
             cout << "Please enter the number of non-zero terms in second polynomial: " << endl;
             cin >> n;
             Polynomial* P2 = new Polynomial(n);
@@ -149,7 +168,7 @@ int main()
 
         }
 
-    } while (choice < 4);
+    } while (choice < 5);
 
     return 0;
 }
