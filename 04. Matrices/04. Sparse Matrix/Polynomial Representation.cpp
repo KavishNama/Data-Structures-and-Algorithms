@@ -151,7 +151,7 @@ int main()
             P->Evaluate(x);
             break;
 
-        case 4: // Adding two sparse matrices
+        case 4: // Adding two polynomials
             cout << "Please enter the number of non-zero terms in second polynomial: " << endl;
             cin >> n;
             Polynomial* P2 = new Polynomial(n);
