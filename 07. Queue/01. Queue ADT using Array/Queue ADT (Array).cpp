@@ -27,16 +27,10 @@ public:
     void Display();
     void Enqueue(T x);
     T Dequeue();
-
-    /*
-    
-    
     T Peek(int pos);
     bool isEmpty();
     bool isFull();
-    T stackTop();
-    */
-
+    T queueFront();
 
 };
 
@@ -106,54 +100,52 @@ T Queue_Array<T>::Dequeue() {
     return x;
 }
 
+// Function to look an element at a given position in the queue
+template <class T>
+T Queue_Array<T>::Peek(int pos) {
+    T x = -1;
+    if (pos <= 0 || pos > rear - front) {
+        cout << "Invalid Position!" << endl;
+    }
+    else {
+        x = A[front+pos];
+    }
 
+    return x;
+}
 
+// Function to check if the queue is empty
+template <class T>
+bool Queue_Array<T>::isEmpty() {
+    if (front == rear) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
-//// Function to look an element at a given position in the stack
-//template <class T>
-//T Stack_Array<T>::Peek(int pos) {
-//    T x = -1;
-//    if (top - pos + 1 < 0) {
-//        cout << "Invalid Position!" << endl;
-//    }
-//    else {
-//        x = A[top - pos + 1];
-//    }
-//    return x;
-//}
-//
-//// Function to check if the stack is empty
-//template <class T>
-//bool Stack_Array<T>::isEmpty() {
-//    if (top == -1) {
-//        return true;
-//    }
-//    else {
-//        return false;
-//    }
-//}
-//
-//// Function to check if the stack is full
-//template <class T>
-//bool Stack_Array<T>::isFull() {
-//    if (top == size - 1) {
-//        return true;
-//    }
-//    else {
-//        return false;
-//    }
-//}
-//
-//// Function to find the topmost value of stack
-//template <class T>
-//T Stack_Array<T>::stackTop() {
-//    if (!isEmpty()) {
-//        return A[top];
-//    }
-//    else {
-//        return -1;
-//    }
-//}
+// Function to check if the queue is full
+template <class T>
+bool Queue_Array<T>::isFull() {
+    if (rear == size - 1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// Function to find the frontmost element in the queue
+template <class T>
+T Queue_Array<T>::queueFront() {
+    if (!isEmpty()) {
+        return A[front+1];
+    }
+    else {
+        return -1;
+    }
+}
 
 
 int main()
@@ -167,27 +159,17 @@ int main()
 
     int choice, position;
     decltype(que->element) x;
-    /*
-
-    char* expression;
-    int sizeExp;
-
-    Stack_Array<char>* stkExp;
-    Stack_Array<int>* stkExp2;*/
 
     do {
         cout << "\nMain Menu:\tChoose an operation to be performed on the QUEUE\n\n";
         cout << "1. Display\n";
         cout << "2. Enqueue\n";
         cout << "3. Dequeue\n";
-
-
-        /*cout << "4. Peek\n";
-        cout << "5. Check if the STACK is empty\n";
-        cout << "6. Check if the STACK is full\n";
-        cout << "7. Find the topmost value of STACK\n";
-        */
-        cout << "4. Exit Menu\n\n";
+        cout << "4. Peek\n";
+        cout << "5. Check if the QUEUE is empty\n";
+        cout << "6. Check if the QUEUE is full\n";
+        cout << "7. Find the frontmost value in the QUEUE\n";        
+        cout << "8. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -210,46 +192,46 @@ int main()
             }
             break;
 
-        //case 4: // Looking an element at a given position in the stack
-        //    cout << "Please enter a position: ";
-        //    cin >> position;
-        //    x = stk->Peek(position);
-        //    if (x != -1) {
-        //        cout << x << " is present at position " << position << endl;
-        //    }
-        //    break;
+        case 4: // Looking an element at a given position in the queue
+            cout << "Please enter a position: ";
+            cin >> position;
+            x = que->Peek(position);
+            if (x != -1) {
+                cout << x << " is present at position " << position << endl;
+            }
+            break;
 
-        //case 5: // Checking if the stack is empty
-        //    if (stk->isEmpty()) {
-        //        cout << "STACK is empty" << endl;
-        //    }
-        //    else {
-        //        cout << "STACK is not empty" << endl;
-        //    }
-        //    break;
+        case 5: // Checking if the queue is empty
+            if (que->isEmpty()) {
+                cout << "QUEUE is empty" << endl;
+            }
+            else {
+                cout << "QUEUE is not empty" << endl;
+            }
+            break;
 
-        //case 6: // Checking if the stack is full
-        //    if (stk->isFull()) {
-        //        cout << "STACK is full" << endl;
-        //    }
-        //    else {
-        //        cout << "STACK is not full" << endl;
-        //    }
-        //    break;
+        case 6: // Checking if the queue is full
+            if (que->isFull()) {
+                cout << "QUEUE is full" << endl;
+            }
+            else {
+                cout << "QUEUE is not full" << endl;
+            }
+            break;
 
-        //case 7: // Finding the topmmost element in the stack
-        //    x = stk->stackTop();
-        //    if (x != -1) {
-        //        cout << "Topmost element in the STACK: " << x << endl;
-        //    }
-        //    else {
-        //        cout << "STACK is empty. No topmost element" << endl;
-        //    }
-        //    break;
+        case 7: // Finding the frontmost element in the QUEUE
+            x = que->queueFront();
+            if (x != -1) {
+                cout << "Frontmost element in the QUEUE: " << x << endl;
+            }
+            else {
+                cout << "QUEUE is empty. No frontmost element" << endl;
+            }
+            break;
 
         }
 
-    } while (choice < 4);
+    } while (choice < 8);
 
     return 0;
 }
