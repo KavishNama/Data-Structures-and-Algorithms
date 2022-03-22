@@ -161,7 +161,7 @@ int main()
     CircularQueue_Array<int>* que;
     int s;
 
-    cout << "Please enter the size of the queue: ";
+    cout << "Please enter the size of the circular queue: ";
     cin >> s;
     que = new CircularQueue_Array<int>(s);
 
