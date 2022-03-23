@@ -49,6 +49,7 @@ SparseLL::~SparseLL() {
             p = A[i];
         }
     }
+    delete[] A;
 }
 
 // Function to create a sparse matrix
