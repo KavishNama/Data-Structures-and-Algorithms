@@ -24,9 +24,6 @@ public:
     // Default Constructor 
     DEQueue_LL();
 
-    // Parameterized Constructor
-    DEQueue_LL(int s);
-
     // Destructor
     ~DEQueue_LL();
 
