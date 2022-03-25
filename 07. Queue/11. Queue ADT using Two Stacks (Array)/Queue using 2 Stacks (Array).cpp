@@ -8,8 +8,6 @@ private:
     int top;
     T* A;
 
-    //void swap(T* x, T* y);
-
 public:
     T element;
 
@@ -52,15 +50,6 @@ template <class T>
 Stack_Array<T>::~Stack_Array() {
     delete[]A;
 }
-
-//// Helper function to be used in other functions
-//template <class T>
-//void Array<T>::swap(T* x, T* y) {
-//    T temp;
-//    temp = *x;
-//    *x = *y;
-//    *y = temp;
-//}
 
 // Function to display the contents of the stack
 template <class T>
@@ -141,13 +130,8 @@ bool Stack_Array<T>::isFull() {
 
 // Function to get the number of elements in the stack
 template <class T>
-int Stack_Array<T>::stackTop() {
-    if (!isEmpty()) {
-        return A[top];
-    }
-    else {
-        return -1;
-    }
+int Stack_Array<T>::getTop() {
+    return top;
 }
 
 template <class T>
@@ -156,8 +140,6 @@ private:
     int size;
     Stack_Array<T>* stk1;
     Stack_Array<T>* stk2;
-
-    //void swap(T* x, T* y);
 
 public:
     T element;
@@ -202,15 +184,6 @@ Queue_TwoStacks_Array<T>::~Queue_TwoStacks_Array() {
     delete[]stk2;
 }
 
-//// Helper function to be used in other functions
-//template <class T>
-//void Array<T>::swap(T* x, T* y) {
-//    T temp;
-//    temp = *x;
-//    *x = *y;
-//    *y = temp;
-//}
-
 // Function to display the contents of the queue
 template <class T>
 void Queue_TwoStacks_Array<T>::Display() {
@@ -231,7 +204,7 @@ void Queue_TwoStacks_Array<T>::Display() {
 // Function to enqueue an element into the queue
 template <class T>
 void Queue_TwoStacks_Array<T>::Enqueue(T x) {
-    if (stk1->isFull()) {
+    if (isFull()) {
         cout << "Queue is Full. Unable to enqueue!" << endl;
     }
     else {
@@ -262,53 +235,69 @@ template <class T>
 T Queue_TwoStacks_Array<T>::Peek(int pos) {
     T x = -1;
     if (stk2->isEmpty()) {
-        if (pos <= 0 || pos > stk1->top) {
+        if (pos <= 0 || pos > stk1->getTop() + 1) {
             cout << "Invalid Position!" << endl;
         }
-    }
-
-    if (pos <= 0 || pos > rear - front) {
-        cout << "Invalid Position!" << endl;
+        else {
+            x = stk1->Peek(stk1->getTop() - pos + 2);
+        }
     }
     else {
-        x = A[front + pos];
+        if (pos <= 0 || pos > stk1->getTop() + stk2->getTop() + 2) {
+            cout << "Invalid Position!" << endl;
+        }
+        else if (pos >= 1 && pos <= stk2->getTop() + 1) {
+            x = stk2->Peek(pos);
+        }
+        else if (pos > stk2->getTop() + 1 && pos <= stk1->getTop() + stk2->getTop() + 2) {
+            x = stk1->Peek(stk1->getTop() - pos + stk2->getTop() + 3);
+        }
     }
-
     return x;
 }
 
-//// Function to check if the queue is empty
-//template <class T>
-//bool Queue_Array<T>::isEmpty() {
-//    if (front == rear) {
-//        return true;
-//    }
-//    else {
-//        return false;
-//    }
-//}
-//
-//// Function to check if the queue is full
-//template <class T>
-//bool Queue_Array<T>::isFull() {
-//    if (rear == size - 1) {
-//        return true;
-//    }
-//    else {
-//        return false;
-//    }
-//}
-//
-//// Function to find the frontmost element in the queue
-//template <class T>
-//T Queue_Array<T>::queueFront() {
-//    if (!isEmpty()) {
-//        return A[front + 1];
-//    }
-//    else {
-//        return -1;
-//    }
-//}
+// Function to check if the queue is empty
+template <class T>
+bool Queue_TwoStacks_Array<T>::isEmpty() {
+    if (stk2->isEmpty()) {
+        if (stk1->isEmpty()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+// Function to check if the queue is full
+template <class T>
+bool Queue_TwoStacks_Array<T>::isFull() {
+    if (stk1->getTop() + stk2->getTop() + 1 == size - 1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// Function to find the frontmost element in the queue
+template <class T>
+T Queue_TwoStacks_Array<T>::queueFront() {
+    if (stk2->isEmpty()) {
+        if (stk1->isEmpty()) {
+            return -1;
+        }
+        else {
+            return stk1->Peek(stk1->getTop() + 1);
+        }
+    }
+    else {
+        return stk2->Peek(1);
+    }
+}
 
 
 int main()
@@ -328,11 +317,11 @@ int main()
         cout << "1. Display\n";
         cout << "2. Enqueue\n";
         cout << "3. Dequeue\n";
-        /*cout << "4. Peek\n";
+        cout << "4. Peek\n";
         cout << "5. Check if the QUEUE is empty\n";
         cout << "6. Check if the QUEUE is full\n";
-        cout << "7. Find the frontmost value in the QUEUE\n";*/
-        cout << "4. Exit Menu\n\n";
+        cout << "7. Find the frontmost value in the QUEUE\n";
+        cout << "8. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -355,46 +344,46 @@ int main()
             }
             break;
 
-        //case 4: // Looking an element at a given position in the queue
-        //    cout << "Please enter a position: ";
-        //    cin >> position;
-        //    x = que->Peek(position);
-        //    if (x != -1) {
-        //        cout << x << " is present at position " << position << endl;
-        //    }
-        //    break;
+        case 4: // Looking an element at a given position in the queue
+            cout << "Please enter a position: ";
+            cin >> position;
+            x = que->Peek(position);
+            if (x != -1) {
+                cout << x << " is present at position " << position << endl;
+            }
+            break;
 
-        //case 5: // Checking if the queue is empty
-        //    if (que->isEmpty()) {
-        //        cout << "QUEUE is empty" << endl;
-        //    }
-        //    else {
-        //        cout << "QUEUE is not empty" << endl;
-        //    }
-        //    break;
+        case 5: // Checking if the queue is empty
+            if (que->isEmpty()) {
+                cout << "QUEUE is empty" << endl;
+            }
+            else {
+                cout << "QUEUE is not empty" << endl;
+            }
+            break;
 
-        //case 6: // Checking if the queue is full
-        //    if (que->isFull()) {
-        //        cout << "QUEUE is full" << endl;
-        //    }
-        //    else {
-        //        cout << "QUEUE is not full" << endl;
-        //    }
-        //    break;
+        case 6: // Checking if the queue is full
+            if (que->isFull()) {
+                cout << "QUEUE is full" << endl;
+            }
+            else {
+                cout << "QUEUE is not full" << endl;
+            }
+            break;
 
-        //case 7: // Finding the frontmost element in the QUEUE
-        //    x = que->queueFront();
-        //    if (x != -1) {
-        //        cout << "Frontmost element in the QUEUE: " << x << endl;
-        //    }
-        //    else {
-        //        cout << "QUEUE is empty. No frontmost element" << endl;
-        //    }
-        //    break;
+        case 7: // Finding the frontmost element in the QUEUE
+            x = que->queueFront();
+            if (x != -1) {
+                cout << "Frontmost element in the QUEUE: " << x << endl;
+            }
+            else {
+                cout << "QUEUE is empty. No frontmost element" << endl;
+            }
+            break;
 
         }
 
-    } while (choice < 4);
+    } while (choice < 8);
 
     return 0;
 }
