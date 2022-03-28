@@ -124,6 +124,113 @@ bool Queue<T>::isFull() {
 }
 
 
+
+template <class T>
+class Stack {
+private:
+    int size;
+    int top;
+    Node<T>** A;
+
+public:
+    T element;
+
+    // Default Constructor 
+    Stack();
+
+    // Parameterized Constructor
+    Stack(int s);
+
+    // Destructor
+    ~Stack();
+
+    // Function prototypes
+    void Display();
+    void Push(Node<T>* x);
+    Node<T>* Pop();
+    bool isEmpty();
+    bool isFull();
+
+};
+
+template <class T>
+Stack<T>::Stack() {
+    size = 10;
+    top = -1;
+    A = new Node<T>*[size];
+}
+
+template <class T>
+Stack<T>::Stack(int s) {
+    size = s;
+    top = -1;
+    A = new Node<T>*[size];
+}
+
+template <class T>
+Stack<T>::~Stack() {
+    delete[]A;
+}
+
+// Function to display the contents of the stack
+template <class T>
+void Stack<T>::Display() {
+    for (int i = top; i >= 0; i--) {
+        cout << A[i] << " ";
+    }
+    cout << endl;
+}
+
+// Function to push an element onto the stack
+template <class T>
+void Stack<T>::Push(Node<T>* x) {
+    if (top == size - 1) {
+        cout << "Stack Overflow. Unable to push!" << endl;
+    }
+    else {
+        top++;
+        A[top] = x;
+    }
+}
+
+// Function to pop an element from the stack
+template <class T>
+Node<T>* Stack<T>::Pop() {
+    Node<T>* x = NULL;
+    if (top == -1) {
+        cout << "Stack Underflow. Unable to pop!" << endl;
+    }
+    else {
+        x = A[top];
+        top--;
+    }
+    return x;
+}
+
+// Function to check if the stack is empty
+template <class T>
+bool Stack<T>::isEmpty() {
+    if (top == -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// Function to check if the stack is full
+template <class T>
+bool Stack<T>::isFull() {
+    if (top == size - 1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+
 template <class T>
 class BinaryTree_Queue_Array {
 private:
@@ -145,10 +252,17 @@ public:
     // Function prototypes
     void preOrder();
     void preOrder(Node<T>* p);
+    void preOrderIterative();
+
     void inOrder();
     void inOrder(Node<T>* p);
+    void inOrderIterative();
+
+
     void postOrder();
     void postOrder(Node<T>* p);
+    void postOrderIterative();
+
     void levelOrder();
     void levelOrder(Node<T>* p);
     int getHeight();
@@ -224,6 +338,25 @@ void BinaryTree_Queue_Array<T>::preOrder(Node<T> *p) {
         preOrder(p->rchild);
     }
 }
+template <class T>
+void BinaryTree_Queue_Array<T>::preOrderIterative() {
+    Stack<T>* stk = new Stack<T>();
+    Node<T>* p = root;
+
+    while (p != NULL || !stk->isEmpty()) {
+        if (p != NULL) {
+            cout << p->data << " ";
+            stk->Push(p);
+            p = p->lchild;
+        }
+        else {
+            p = stk->Pop();
+            p = p->rchild;
+        }
+    }
+
+    cout << endl;
+}
 
 // Function to display the contents of the tree in Inorder Traversal Fashion
 template <class T>
@@ -239,6 +372,25 @@ void BinaryTree_Queue_Array<T>::inOrder(Node<T>* p) {
         inOrder(p->rchild);
     }
 }
+template <class T>
+void BinaryTree_Queue_Array<T>::inOrderIterative() {
+    Stack<T>* stk = new Stack<T>();
+    Node<T>* p = root;
+
+    while (p != NULL || !stk->isEmpty()) {
+        if (p != NULL) {
+            stk->Push(p);
+            p = p->lchild;
+        }
+        else {
+            p = stk->Pop();
+            cout << p->data << " ";
+            p = p->rchild;
+        }
+    }
+
+    cout << endl;
+}
 
 // Function to display the contents of the tree in Postorder Traversal Fashion
 template <class T>
@@ -253,6 +405,33 @@ void BinaryTree_Queue_Array<T>::postOrder(Node<T>* p) {
         postOrder(p->rchild);
         cout << p->data << " ";
     }
+}
+template <class T>
+void BinaryTree_Queue_Array<T>::postOrderIterative() {
+    Stack<T>* stk = new Stack<T>();
+    Node<T>* p = root;
+    long long int temp;
+
+    while (p != NULL || !stk->isEmpty()) {
+        if (p != NULL) {
+            stk->Push(p);
+            p = p->lchild;
+        }
+        else {
+            //temp = stk->Pop();
+            temp = reinterpret_cast<long long int>(stk->Pop());
+            if (temp > 0) {
+                stk->Push((Node<T>*)(-temp));
+                p = ((Node<T>*)temp)->rchild;
+            }
+            else {
+                cout << ((Node<T>*)(-temp))->data << " ";
+                p = NULL;
+            }
+        }
+    }
+
+    cout << endl;
 }
 
 // Function to display the contents of the tree in Levelorder Traversal Fashion
@@ -321,11 +500,14 @@ int main()
     do {
         cout << "\nMain Menu:\tChoose an operation to be performed on the TREE\n\n";
         cout << "1. Display in Preorder Traversal Fashion\n";
-        cout << "2. Display in Inorder Traversal Fashion\n";
-        cout << "3. Display in Postorder Traversal Fashion\n";
-        cout << "4. Display in Levelorder Traversal Fashion\n";
-        cout << "5. Find Height\n";
-        cout << "6. Exit Menu\n\n";
+        cout << "2. Display in Preorder Traversal Fashion - Iterative\n";
+        cout << "3. Display in Inorder Traversal Fashion\n";
+        cout << "4. Display in Inorder Traversal Fashion - Iterative\n";
+        cout << "5. Display in Postorder Traversal Fashion\n";
+        cout << "6. Display in Postorder Traversal Fashion - Iterative\n";
+        cout << "7. Display in Levelorder Traversal Fashion\n";
+        cout << "8. Find Height\n";
+        cout << "9. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -335,29 +517,44 @@ int main()
             btree->preOrder();
             break;
 
-        case 2: // Displaying the contents of the tree in Inorder Traversal Fashion
+        case 2: // Displaying the contents of the tree in Preorder Traversal Fashion - Iterative Approach
+            cout << "Preorder Traversal - Iterative: ";
+            btree->preOrderIterative();
+            break;
+
+        case 3: // Displaying the contents of the tree in Inorder Traversal Fashion
             cout << "Inorder Traversal: ";
             btree->inOrder();
             break;
 
-        case 3: // Displaying the contents of the tree in Postorder Traversal Fashion
+        case 4: // Displaying the contents of the tree in Inorder Traversal Fashion - Iterative Approach
+            cout << "Inorder Traversal - Iterative: ";
+            btree->inOrderIterative();
+            break;
+
+        case 5: // Displaying the contents of the tree in Postorder Traversal Fashion
             cout << "Postorder Traversal: ";
             btree->postOrder();
             break;
 
-        case 4: // Displaying the contents of the tree in Levelorder Traversal Fashion
+        case 6: // Displaying the contents of the tree in Postorder Traversal Fashion - Iterative Approach
+            cout << "Postorder Traversal - Iterative: ";
+            btree->postOrderIterative();
+            break;
+
+        case 7: // Displaying the contents of the tree in Levelorder Traversal Fashion
             cout << "Levelorder Traversal: ";
             btree->levelOrder();
             break;
 
-        case 5: // Find the height of the tree
+        case 8: // Find the height of the tree
             cout << "The height of the tree is: ";
             cout << btree->getHeight();
             break;
 
         }
 
-    } while (choice < 6);
+    } while (choice < 9);
 
     return 0;
 }
