@@ -57,9 +57,6 @@ Queue<T>::Queue(int s) {
 
 template <class T>
 Queue<T>::~Queue() {
-    for (int i = 0; i < size; i++) {
-        delete[] A[i];
-    }
     delete[]A;
 }
 
@@ -143,6 +140,7 @@ public:
 
     // Destructor
     ~BinaryTree_Queue_Array();
+    void destroyRecursive(Node<T>* p);
 
     // Function prototypes
     void preOrder();
@@ -155,7 +153,6 @@ public:
     void levelOrder(Node<T>* p);
     int getHeight();
     int getHeight(Node<T>* p);
-
 
 };
 
@@ -201,7 +198,16 @@ BinaryTree_Queue_Array<T>::BinaryTree_Queue_Array(int s, T x) {
 
 template <class T>
 BinaryTree_Queue_Array<T>::~BinaryTree_Queue_Array() {
-    delete[] root;
+    destroyRecursive(root);
+}
+
+template <class T>
+void BinaryTree_Queue_Array<T>::destroyRecursive(Node<T>* p) {
+    if (p != NULL) {
+        destroyRecursive(p->lchild);
+        destroyRecursive(p->rchild);
+        delete p;
+    }
 }
 
 // Function to display the contents of the tree in Preorder Traversal Fashion
