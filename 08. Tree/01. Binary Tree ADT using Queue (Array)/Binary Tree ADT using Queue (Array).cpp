@@ -265,8 +265,30 @@ public:
 
     void levelOrder();
     void levelOrder(Node<T>* p);
+
     int getHeight();
     int getHeight(Node<T>* p);
+
+    int countNodes();
+    int countNodes(Node<T>* p);
+    int countNodesRecursive();
+    int countNodesRecursive(Node<T>* p);
+
+    int countNodesBothChildren();
+    int countNodesBothChildren(Node<T>* p);
+
+    int countLeafNodes();
+    int countLeafNodes(Node<T>* p);
+
+    int countInternalNodes();
+    int countInternalNodes(Node<T>* p);
+
+    int countNodesDegreeOne();
+    int countNodesDegreeOne(Node<T>* p);
+
+    T sumNodes();
+    T sumNodes(Node<T>* p);
+
 
 };
 
@@ -481,6 +503,134 @@ int BinaryTree_Queue_Array<T>::getHeight(Node<T>* p) {
     }
 }
 
+// Function to find the number of nodes in the tree
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodes() {
+    return countNodes(root);
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodes(Node<T>* p) {
+    int x, y;
+    if (p != NULL) {
+        x = countNodes(p->lchild);
+        y = countNodes(p->rchild);
+        return x + y + 1;
+    }
+    return 0;
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodesRecursive() {
+    return countNodesRecursive(root);
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodesRecursive(Node<T>* p) {
+    if (p == NULL) {
+        return 0;
+    }
+    return countNodesRecursive(p->lchild) + countNodesRecursive(p->rchild) + 1;
+}
+
+// Function to find the number of nodes in the tree which have both children
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodesBothChildren() {
+    return countNodesBothChildren(root);
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodesBothChildren(Node<T>* p) {
+    int x, y;
+    if (p != NULL) {
+        x = countNodesBothChildren(p->lchild);
+        y = countNodesBothChildren(p->rchild);
+        if (p->lchild && p->rchild) {
+            return x + y + 1;
+        }
+        else {
+            return x + y;
+        }
+    }
+    return 0;
+}
+
+// Function to find the number of leaf/external nodes in the tree
+template <class T>
+int BinaryTree_Queue_Array<T>::countLeafNodes() {
+    return countLeafNodes(root);
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countLeafNodes(Node<T>* p) {
+    int x, y;
+    if (p != NULL) {
+        x = countLeafNodes(p->lchild);
+        y = countLeafNodes(p->rchild);
+        if (p->lchild == NULL && p->rchild == NULL) {
+            return x + y + 1;
+        }
+        else {
+            return x + y;
+        }
+    }
+    return 0;
+}
+
+// Function to find the number of non-leaf/internal nodes in the tree
+template <class T>
+int BinaryTree_Queue_Array<T>::countInternalNodes() {
+    return countInternalNodes(root);
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countInternalNodes(Node<T>* p) {
+    int x, y;
+    if (p != NULL) {
+        x = countInternalNodes(p->lchild);
+        y = countInternalNodes(p->rchild);
+        if (p->lchild || p->rchild) {
+            return x + y + 1;
+        }
+        else {
+            return x + y;
+        }
+    }
+    return 0;
+}
+
+// Function to find the number of nodes in the tree with degree exactly equal to 1
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodesDegreeOne() {
+    return countNodesDegreeOne(root);
+}
+template <class T>
+int BinaryTree_Queue_Array<T>::countNodesDegreeOne(Node<T>* p) {
+    int x, y;
+    if (p != NULL) {
+        x = countNodesDegreeOne(p->lchild);
+        y = countNodesDegreeOne(p->rchild);
+        if ((p->lchild && p->rchild == NULL) || (p->lchild == NULL && p->rchild)) { // We can also use EXCLUSIVE OR Operator ^ in the condition, if (p->lchild ^ p->rchild){...}
+            return x + y + 1;
+        }
+        else {
+            return x + y;
+        }
+    }
+    return 0;
+}
+
+// Function to find the sum of all nodes in the tree
+template <class T>
+T BinaryTree_Queue_Array<T>::sumNodes() {
+    return sumNodes(root);
+}
+template <class T>
+T BinaryTree_Queue_Array<T>::sumNodes(Node<T>* p) {
+    T x, y;
+    if (p != NULL) {
+        x = sumNodes(p->lchild);
+        y = sumNodes(p->rchild);
+        return x + y + p->data;
+    }
+    return 0;
+}
+
+
 
 int main()
 {
@@ -507,7 +657,14 @@ int main()
         cout << "6. Display in Postorder Traversal Fashion - Iterative\n";
         cout << "7. Display in Levelorder Traversal Fashion\n";
         cout << "8. Find Height\n";
-        cout << "9. Exit Menu\n\n";
+        cout << "9. Find number of nodes\n";
+        cout << "10. Find number of nodes - Recursive Approach\n";
+        cout << "11. Find number of nodes with both children\n";
+        cout << "12. Find number of leaf nodes\n";
+        cout << "13. Find number of internal nodes\n";
+        cout << "14. Find number of nodes with degree exactly 1\n";
+        cout << "15. Find sum of all nodes\n";
+        cout << "16. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -552,9 +709,44 @@ int main()
             cout << btree->getHeight();
             break;
 
+        case 9: // Find number of nodes in the tree
+            cout << "The number of nodes in the tree are: ";
+            cout << btree->countNodes();
+            break;
+
+        case 10: // Find number of nodes in the tree - Recursive Approach
+            cout << "The number of nodes in the tree are: ";
+            cout << btree->countNodesRecursive();
+            break;
+
+        case 11: // Find number of nodes in the tree with both children
+            cout << "The number of nodes in the tree with both children are: ";
+            cout << btree->countNodesBothChildren();
+            break;
+
+        case 12: // Find number of leaf nodes in the tree
+            cout << "The number of leaf nodes in the tree are: ";
+            cout << btree->countLeafNodes();
+            break;
+
+        case 13: // Find number of intenal nodes in the tree
+            cout << "The number of internal nodes in the tree are: ";
+            cout << btree->countInternalNodes();
+            break;
+
+        case 14: // Find number of nodes in the tree with degree exactly equal to one
+            cout << "The number of nodes in the tree with degree exactly 1 are: ";
+            cout << btree->countNodesDegreeOne();
+            break;
+
+        case 15: // Find sum of all nodes in the tree
+            cout << "The sum of all nodes in the tree is: ";
+            cout << btree->sumNodes();
+            break;
+
         }
 
-    } while (choice < 9);
+    } while (choice < 16);
 
     return 0;
 }
