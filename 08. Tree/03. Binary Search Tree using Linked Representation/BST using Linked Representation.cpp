@@ -151,9 +151,6 @@ public:
     // Default Constructor 
     BST_Linked();
 
-    // Parameterized Constructor
-    BST_Linked(T x);
-
     // Destructor
     ~BST_Linked();
     void destroyRecursive(treeNode<T>* p);
