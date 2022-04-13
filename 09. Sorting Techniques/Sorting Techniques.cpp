@@ -10,6 +10,7 @@ private:
 
     void swap(T* x, T* y);
     int partition(int l, int h);
+    void merge(int l, int mid, int h);
 
 public:
     T element;
@@ -34,6 +35,10 @@ public:
     void selectionSort();
     void quickSort();
     void quickSort(int l, int h);
+    void mergeSortIterative();
+    void mergeSortRecursive();
+    void mergeSortRecursive(int l, int h);
+    
     
 };
 
@@ -205,6 +210,74 @@ void Array<T>::quickSort(int l, int h) {
     }
 }
 
+// Function to merge two lists in a single array for implementing Merge Sort Algorithm
+template <class T>
+void Array<T>::merge(int l, int mid, int h) {
+    int i = l, j = mid + 1, k = l;
+    T* B = new T[length];
+    //T B[100];
+
+    while (i <= mid && j <= h) {
+        if (A[i] < A[j]) {
+            B[k] = A[i];
+            k++;
+            i++;
+        }
+        else {
+            B[k] = A[j];
+            k++;
+            j++;
+        }
+    }
+
+    for (; i <= mid; i++) {
+        B[k] = A[i];
+        k++;
+    }
+    for (; j <= h; j++) {
+        B[k] = A[j];
+        k++;
+    }
+    for (i = l; i <= h; i++) {
+        A[i] = B[i];
+    }
+
+}
+
+// Function to sort the elements of the array using Merge Sort Algorithm - Iterative version
+template <class T>
+void Array<T>::mergeSortIterative() {
+    int p, i, l, mid, h;
+    for (p = 2; p <= length; p = p * 2) {
+        for (i = 0; i + p - 1 < length; i = i + p) {
+            l = i;
+            h = i + p - 1;
+            mid = (l + h) / 2;
+            merge(l, mid, h);
+        }
+    }
+    if (p / 2 < length) {
+        merge(p / 2, ((p / 2) + length) / 2, length - 1);
+        merge(0, p / 2 - 1, length - 1);
+    }
+}
+
+// Function to sort the elements of the array using Merge Sort Algorithm - Recursive version
+template <class T>
+void Array<T>::mergeSortRecursive() {
+    mergeSortRecursive(0, length - 1);
+}
+template <class T>
+void Array<T>::mergeSortRecursive(int l, int h) {
+    int mid;
+    if (l < h) {
+        mid = (l + h) / 2;
+        mergeSortRecursive(l, mid);
+        mergeSortRecursive(mid + 1, h);
+        merge(l, mid, h);
+    }
+}
+
 
 int main()
 {
@@ -229,8 +302,10 @@ int main()
         cout << "6. Perform Insertion Sort\n";
         cout << "7. Perform Selection Sort\n";
         cout << "8. Perform Quick Sort\n";
+        cout << "9. Perform Merge Sort - Iterative\n";
+        cout << "10. Perform Merge Sort - Recursive\n";
 
-        cout << "9. Exit Menu\n\n";
+        cout << "11. Exit Menu\n\n";
 
         cin >> choice;
 
@@ -270,6 +345,7 @@ int main()
 
             cout << "After Bubble Sort: ";
             arr->Display();
+            break;
 
         case 6: // Sorting the elements in the array using Insertion Sort Algorithm
             cout << "Before Insertion Sort: ";
@@ -279,6 +355,7 @@ int main()
 
             cout << "After Insertion Sort: ";
             arr->Display();
+            break;
 
         case 7: // Sorting the elements in the array using Selection Sort Algorithm
             cout << "Before Selection Sort: ";
@@ -288,6 +365,7 @@ int main()
 
             cout << "After Selection Sort: ";
             arr->Display();
+            break;
 
         case 8: // Sorting the elements in the array using Quick Sort Algorithm
             cout << "Before Quick Sort: ";
@@ -297,11 +375,32 @@ int main()
 
             cout << "After Quick Sort: ";
             arr->Display();
+            break;
+
+        case 9: // Sorting the elements in the array using Merge Sort Algorithm - Iterative version
+            cout << "Before Merge Sort: ";
+            arr->Display();
+
+            arr->mergeSortIterative();
+
+            cout << "After Merge Sort: ";
+            arr->Display();
+            break;
+
+        case 10: // Sorting the elements in the array using Merge Sort Algorithm - Recursive version
+            cout << "Before Merge Sort: ";
+            arr->Display();
+
+            arr->mergeSortRecursive();
+
+            cout << "After Merge Sort: ";
+            arr->Display();
+            break;
 
 
         }
 
-    } while (choice < 9);
+    } while (choice < 11);
 
     return 0;
 }
